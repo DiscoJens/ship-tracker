@@ -7,6 +7,7 @@ wheels/
 *.egg-info
 .env
 ships.db
+ships.db-journal
 
 # Virtual environments
 .venv
