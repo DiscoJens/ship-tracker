@@ -1,0 +1,10 @@
+services:
+  ship-tracker:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ships.db:/app/ships.db  # Persist the database outside the container
+    env_file:
+      - .env  # Pass in your API key
+    restart: unless-stopped

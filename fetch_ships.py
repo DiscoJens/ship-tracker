@@ -1,3 +1,7 @@
+# Standalone AIS collector script.
+# Note: this functionality is also built into api.py via the startup_event.
+# Run this independently if you want to collect data without the web server.
+
 import asyncio
 import websockets
 import json
