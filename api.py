@@ -5,12 +5,14 @@ import sqlite3
 app = FastAPI()
 
 def get_db():
+    """Open a connection to the SQLite database and return rows as dicts."""
     conn = sqlite3.connect("ships.db")
     conn.row_factory = sqlite3.Row
     return conn
 
 @app.get("/ships")
 def get_ships():
+    """Return all sightings, newest first. Useful for debugging and raw data export."""
     db = get_db()
     rows = db.execute("""
         SELECT name, lat, lon, seen_at
@@ -22,6 +24,8 @@ def get_ships():
 
 @app.get("/ships/latest")
 def get_latest_ships():
+    """Return the most recent position for each unique vessel.
+    Used by the map to display current ship locations."""
     db = get_db()
     rows = db.execute("""
         SELECT name, mmsi, lat, lon, speed, heading, course, navigational_status, MAX(seen_at) as seen_at
@@ -32,9 +36,10 @@ def get_latest_ships():
     db.close()
     return [dict(row) for row in rows]
 
-
 @app.get("/ships/{name}/trail")
 def get_ship_trail(name: str):
+    """Return the full position history for a named vessel, oldest first.
+    Used to draw the trail line on the map when a vessel is clicked."""
     db = get_db()
     rows = db.execute("""
         SELECT name, lat, lon, seen_at
@@ -45,11 +50,12 @@ def get_ship_trail(name: str):
     db.close()
     return [dict(row) for row in rows]
 
-
 @app.get("/stats")
 def get_stats():
+    """Return summary statistics: total sightings, unique vessel count,
+    and the 5 most frequently seen vessels."""
     db = get_db()
-    
+
     total_sightings = db.execute("SELECT COUNT(*) FROM sightings").fetchone()[0]
     unique_ships = db.execute("SELECT COUNT(DISTINCT name) FROM sightings").fetchone()[0]
     most_active = db.execute("""
@@ -59,7 +65,7 @@ def get_stats():
         ORDER BY count DESC 
         LIMIT 5
     """).fetchall()
-    
+
     db.close()
     return {
         "total_sightings": total_sightings,
@@ -67,4 +73,5 @@ def get_stats():
         "most_active": [dict(row) for row in most_active]
     }
 
+# Serve the frontend — this must be last since it catches all remaining routes
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

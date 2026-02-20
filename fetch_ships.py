@@ -6,12 +6,13 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 import os
 
+# Load API key from .env file
 load_dotenv()
-
 API_KEY = os.getenv("AISSTREAM_API_KEY")
 DB_FILE = "ships.db"
 
 async def init_db(db):
+    """Create the sightings table if it doesn't already exist."""
     await db.execute("""
         CREATE TABLE IF NOT EXISTS sightings (
             id                  INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,12 +30,16 @@ async def init_db(db):
     await db.commit()
 
 async def fetch_ships():
+    """Connect to the AIS stream and continuously save vessel sightings to the database.
+    Reconnects automatically if the connection drops."""
     url = "wss://stream.aisstream.io/v0/stream"
 
+    # Define the geographic bounding box to monitor
+    # Covers northern Norway, the Barents Sea, and the Kola Peninsula
     subscribe_message = {
         "APIKey": API_KEY,
         "BoundingBoxes": [
-            [[68.0, 14.0], [74.0, 41.0]]
+            [[68.0, 14.0], [74.0, 41.0]]  # [south, west], [north, east]
         ]
     }
 
@@ -49,22 +54,24 @@ async def fetch_ships():
 
                     async for raw_message in ws:
                         message = json.loads(raw_message)
-                        meta = message.get("MetaData", {})
+                        meta   = message.get("MetaData", {})
                         report = message.get("Message", {}).get("PositionReport", {})
 
+                        # Skip vessels with no name or placeholder name
                         name = meta.get("ShipName", "").strip()
-
                         if not name or name == "Unknown":
                             continue
 
+                        # Extract position and movement data from the AIS message
                         mmsi       = meta.get("MMSI")
                         lat        = meta.get("latitude")
                         lon        = meta.get("longitude")
-                        speed      = report.get("Sog")
-                        heading    = report.get("TrueHeading")
-                        course     = report.get("Cog")
-                        nav_status = report.get("NavigationalStatus")
+                        speed      = report.get("Sog")        # Speed over ground in knots
+                        heading    = report.get("TrueHeading") # Compass heading (511 = unavailable)
+                        course     = report.get("Cog")         # Course over ground in degrees
+                        nav_status = report.get("NavigationalStatus")  # 0=underway, 1=anchor, 5=moored, etc.
 
+                        # Skip if position is missing
                         if lat is None or lon is None:
                             continue
 
