@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MARITRAK // Northern Norway</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+    <div id="header">
+        <div id="header-left">
+            <div id="header-title">MARITRAK</div>
+            <div id="header-sub">NORTHERN NORWAY // MARITIME SURVEILLANCE</div>
+        </div>
+        <div id="header-right">
+            <span class="status-dot"></span>
+            <span id="ship-count">INITIALIZING...</span>
+            <span id="last-updated"></span>
+        </div>
+    </div>
+    <div id="vessel-panel">
+        <div id="vessel-info">
+            <div class="panel-title">// VESSEL</div>
+            <div style="color: var(--text-dim); font-size: 0.75rem; line-height: 1.6;">
+                CLICK ON A VESSEL<br>TO LOAD DETAILS
+            </div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div id="stats-panel">
+        <div class="panel-title">// STATISTICS</div>
+        <div id="stats-content">LOADING...</div>
+    </div>
+
+    <div id="legend">
+        <div class="panel-title">// LEGEND</div>
+        <div class="legend-item">
+            <span class="legend-arrow" style="color: #00ff41;">▲</span>
+            <span>UNDERWAY</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-arrow" style="color: #ffd700;">▲</span>
+            <span>AT ANCHOR</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-arrow" style="color: #00ffff;">▲</span>
+            <span>MOORED</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-arrow" style="color: #ff4444;">▲</span>
+            <span>NOT UNDER COMMAND</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-arrow" style="color: #888888;">●</span>
+            <span>UNKNOWN COURSE</span>
+        </div>
+        <hr class="stat-divider">
+        <div class="legend-item">
+            <span class="legend-box"></span>
+            <span>MONITORED AREA</span>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/app.js"></script>
+</body>
+</html>
