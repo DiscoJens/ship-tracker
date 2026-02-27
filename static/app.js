@@ -1,4 +1,4 @@
-// ── Map setup ──────────────────────────────────────────────────────────────
+// - Map setup ──────────────────────────────────────────────────────────────
 const map = L.map('map').setView([70.0, 20.0], 6);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
@@ -22,7 +22,7 @@ let markers = [];
 let activeTrail = null;
 let selectedMarker = null;
 
-// ── Helper functions ────────────────────────────────────────────────────────
+// - Helper functions ────────────────────────────────────────────────────────
 
 // Map AIS navigational status code to a display color
 function statusColor(code) {
@@ -98,7 +98,7 @@ function updateVesselPanel(ship) {
     `;
 }
 
-// ── Data loading ────────────────────────────────────────────────────────────
+// - Data loading ────────────────────────────────────────────────────────────
 
 // Fetch and draw the position history for a vessel as a polyline
 async function showTrail(shipName) {
@@ -200,7 +200,7 @@ async function loadStats() {
     `;
 }
 
-// ── WebSocket for live updates ───────────────────────────────────────────────
+// - WebSocket for live updates ───────────────────────────────────────────────
 const ws = new WebSocket(`ws://${window.location.host}/ws`);
 
 ws.onopen = () => {
@@ -219,7 +219,7 @@ ws.onclose = () => {
     setInterval(loadInitialShips, 30000);
 };
 
-// ── Initialise ──────────────────────────────────────────────────────────────
+// - Initialise ──────────────────────────────────────────────────────────────
 loadInitialShips();   // Load existing ships immediately on page load
 loadStats();
 setInterval(loadStats, 30000);  // Refresh statistics every 30 seconds

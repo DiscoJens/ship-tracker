@@ -21,7 +21,7 @@ body {
     overflow: hidden;
 }
 
-/* ── Header ── */
+/* - Header - */
 #header {
     height: 52px;
     padding: 0 20px;
@@ -84,13 +84,13 @@ body {
     50% { opacity: 0.3; }
 }
 
-/* ── Map ── */
+/* - Map - */
 #map {
     height: calc(100vh - 52px);
     background: var(--bg);
 }
 
-/* ── Panels ── */
+/* - Panels - */
 .panel-title {
     font-size: 0.7rem;
     color: var(--text-dim);
@@ -160,7 +160,7 @@ body {
 
 .active-ship span:last-child { color: var(--green); }
 
-/* ── Legend ── */
+/* - Legend - */
 #legend {
     position: absolute;
     bottom: 30px;
@@ -199,7 +199,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ── Leaflet overrides ── */
+/* - Leaflet overrides - */
 .leaflet-popup-content-wrapper {
     background: var(--panel-bg) !important;
     border: 1px solid var(--border) !important;

@@ -1,5 +1,5 @@
 # MARITRAK
-### Live Maritime Surveillance — Northern Norway & Barents Sea
+### Live Maritime Surveillance - Northern Norway & Barents Sea
 
 A real-time AIS ship tracking application covering northern Norway and the Barents Sea. Built with Python, FastAPI, SQLite, and Leaflet.js.
 
@@ -10,13 +10,13 @@ A real-time AIS ship tracking application covering northern Norway and the Baren
 ## Features
 
 - **Live AIS data stream** via [aisstream.io](https://aisstream.io), updated in real time
-- **True real-time map updates** via WebSocket — vessels move instantly as new data arrives
+- **True real-time map updates** via WebSocket - vessels move instantly as new data arrives
 - **Interactive map** with color-coded vessel markers by navigational status
 - **Course arrows** showing direction of travel for each vessel
-- **Ship trails** — click any vessel to see its historical track
+- **Ship trails** - click any vessel to see its historical track
 - **Vessel info panel** with speed, heading, course, MMSI, and navigational status
 - **Statistics panel** showing total sightings, unique vessels, and most active ships
-- **VesselFinder integration** — direct link to full vessel profile from the info panel
+- **VesselFinder integration** - direct link to full vessel profile from the info panel
 - Monitored area covers northern Norway, the Barents Sea, and the Kola Peninsula
 
 ## Tech Stack
@@ -35,7 +35,7 @@ A real-time AIS ship tracking application covering northern Norway and the Baren
 
 ```
 ship-tracker/
-├── api.py              # FastAPI backend — serves API, collects AIS data, and
+├── api.py              # FastAPI backend - serves API, collects AIS data, and
 │                       # broadcasts live updates to browsers via WebSocket
 ├── fetch_ships.py      # Standalone AIS collector (alternative to api.py)
 ├── static/
@@ -57,7 +57,7 @@ aisstream.io → (WebSocket) → api.py → SQLite database
                              browser (WebSocket) → live map updates
 ```
 
-`api.py` runs two things simultaneously — an AIS stream collector that saves ship positions to the database, and a FastAPI server that serves the map and pushes live updates to connected browsers via WebSocket. Every time a ship broadcasts its position, the map updates instantly.
+`api.py` runs two things simultaneously - an AIS stream collector that saves ship positions to the database, and a FastAPI server that serves the map and pushes live updates to connected browsers via WebSocket. Every time a ship broadcasts its position, the map updates instantly.
 
 ## Getting Started
 

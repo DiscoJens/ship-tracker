@@ -15,7 +15,7 @@ DB_FILE = "ships.db"
 
 app = FastAPI()
 
-# ── WebSocket connection manager ────────────────────────────────────────────
+# - WebSocket connection manager ────────────────────────────────────────────
 # Keeps track of all browser clients currently connected
 class ConnectionManager:
     def __init__(self):
@@ -40,7 +40,7 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
-# ── Database helpers ────────────────────────────────────────────────────────
+# - Database helpers ────────────────────────────────────────────────────────
 def get_db():
     """Open a connection to the SQLite database and return rows as dicts."""
     conn = sqlite3.connect(DB_FILE)
@@ -65,7 +65,7 @@ async def init_db(db):
     """)
     await db.commit()
 
-# ── AIS collector ───────────────────────────────────────────────────────────
+# - AIS collector ───────────────────────────────────────────────────────────
 async def fetch_ships():
     """Connect to the AIS stream and continuously save vessel sightings.
     Broadcasts each new sighting to all connected browsers via WebSocket."""
@@ -138,13 +138,13 @@ async def fetch_ships():
                 print(f"AIS connection dropped: {e} — reconnecting in 3 seconds...")
                 await asyncio.sleep(3)
 
-# ── Start AIS collector when API starts ─────────────────────────────────────
+# - Start AIS collector when API starts ─────────────────────────────────────
 @app.on_event("startup")
 async def startup_event():
     """Launch the AIS collector as a background task when the server starts."""
     asyncio.create_task(fetch_ships())
 
-# ── HTTP endpoints ───────────────────────────────────────────────────────────
+# - HTTP endpoints ───────────────────────────────────────────────────────────
 @app.get("/ships")
 def get_ships():
     """Return all sightings, newest first."""
@@ -203,7 +203,7 @@ def get_stats():
         "most_active": [dict(row) for row in most_active]
     }
 
-# ── WebSocket endpoint for browsers ─────────────────────────────────────────
+# - WebSocket endpoint for browsers ─────────────────────────────────────────
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     """Browser connects here to receive live ship updates."""
